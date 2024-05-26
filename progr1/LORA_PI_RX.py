@@ -7,18 +7,8 @@ BOARD.setup()
 class LoRaRcvCont(LoRa):
     def __init__(self, verbose=False):
         super(LoRaRcvCont, self).__init__(verbose)
-        self.set_mode(MODE.SLEEP)
-        self.set_dio_mapping([0] * 6)
-
-    def start(self):
-        self.reset_ptr_rx()
-        self.set_mode(MODE.RXCONT)
-        while True:
-            sleep(.5)
-            rssi_value = self.get_rssi_value()
-            status = self.get_modem_status()
-            sys.stdout.flush()
-            
+        #self.set_mode(MODE.SLEEP)
+        #self.set_dio_mapping([0] * 6)
 
     def on_rx_done(self):
         print("\nReceived: ")
@@ -29,15 +19,33 @@ class LoRaRcvCont(LoRa):
         self.reset_ptr_rx()
         self.set_mode(MODE.RXCONT) 
 
+BOARD.setup()
 lora = LoRaRcvCont(verbose=False)
 lora.set_mode(MODE.STDBY)
 
-#  Medium Range  Defaults after init are 434.0MHz, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on 13 dBm
 
+def start():
+    lora.reset_ptr_rx()
+    lora.set_mode(MODE.RXCONT)
+    #lora.on_rx_done()
+    #lora.enable_irq(lora.IRQ_RX_DONE)
+    while True:
+        sleep(.5)
+        rssi_value = lora.get_rssi_value()
+        status = lora.get_modem_status()
+        sys.stdout.flush()
+            
+
+
+
+
+
+
+#  Medium Range  Defaults after init are 434.0MHz, Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on 13 dBm
 lora.set_pa_config(pa_select=1)
 
 try:
-    lora.start()
+    start()
 except KeyboardInterrupt:
     sys.stdout.flush()
     print("")
