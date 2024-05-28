@@ -1,9 +1,11 @@
 from time import sleep
 from SX127x.LoRa import *
 from SX127x.board_config import BOARD
+import RPi.GPIO as GPIO
+import spidev
 
 BOARD.setup()
-
+#def __init__(self, verbose=True, do_calibration=False, calibration_freq=434):
 class LoRaRcvCont(LoRa):
     def __init__(self, verbose=False):
         super(LoRaRcvCont, self).__init__(verbose)
