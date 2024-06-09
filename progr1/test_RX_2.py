@@ -39,7 +39,7 @@ class LoRaRcvCont(LoRa):
             sys.stdout.flush()
             sys.stdout.write("\r%d %d %d" % (rssi_value, status['rx_ongoing'], status['modem_clear']))  
 
-lora=LoRaRcvCont(verbose=False)
+lora=LoRaRcvCont(verbose=False, calibration_freq=433)
 
 lora.set_mode(MODE.STDBY)
 lora.set_pa_config(pa_select=1)       
